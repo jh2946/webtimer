@@ -102,3 +102,8 @@ dist
 
 # TernJS port file
 .tern-port
+
+# these can be built with webpack
+public/*.js
+public/*.js.map
+!public/import/*
