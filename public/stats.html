@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="import/jquery-3.6.3.min.js"></script>
+	<link rel="stylesheet" href="import/bootstrap-4.0.0-dist/css/bootstrap.min.css" />
+	<script src="import/bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="stats.css" />
+	<title>webtimer Statistics</title>
+</head>
+<body>
+	<div class="d-flex justify-content-center">
+		<h1>Statistics</h1>
+	</div>
+	<div class="d-flex justify-content-center">
+		<div class="card">
+			<div class="card-body">
+				<canvas id="ctx"></canvas>
+				<hr />
+				<div class="container-fluid" id="chart-options-inner">
+					<div class="row chart-options-row">
+						<div class="col d-flex justify-content-center">
+							<h2>Chart display</h2>
+						</div>
+					</div>
+					<div class="row chart-options-row">
+						<div class="col chart-options-content">
+							<p>Scale:</p>
+						</div>
+						<div class="col d-flex justify-content-end chart-options-content">
+							<select name="scale" id="scale">
+								<option>per hour</option>
+								<option>per day</option>
+							</select>
+						</div>
+					</div>
+					<div class="row chart-options-row">
+						<div class="col chart-options-content">
+							<p>Start:</p>
+						</div>
+						<div class="col d-flex justify-content-end chart-options-content">
+							<input type="datetime-local" id="start-hour" step="3600" />
+							<input type="date" id="start-day" hidden />
+						</div>
+					</div>
+					<div class="row chart-options-row">
+						<div class="col chart-options-content">
+							<p>End:</p>
+						</div>
+						<div class="col d-flex justify-content-end chart-options-content">
+							<input type="datetime-local" id="end-hour" step="3600" />
+							<input type="date" id="end-day" hidden />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+	<script src="stats.js"></script>
+</body>
+</html>

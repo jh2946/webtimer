@@ -1,0 +1,45 @@
+@font-face {
+    font-family: Futura-Light;
+    src: url(./fonts/futura\ light\ bt.ttf)
+}
+
+@font-face {
+    font-family: Futura;
+    src: url(./fonts/futura\ medium\ bt.ttf)
+}
+
+#chart-options {
+    margin-top: 100px;
+    border: 1px solid #cecece;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    font-family: Futura-Light;
+    font-size: 18px;
+}
+
+#chart-options-inner {
+    width: 400px;
+}
+
+.chart-options-row {
+    margin: 20px 10px 20px 10px;
+}
+
+select, input {
+    border-radius: 5px;
+    border-width: 0px;
+    width: 215px;
+}
+
+select:focus, input:focus {
+    outline: none;
+}
+
+.chart-options-content {
+    align-items: baseline;
+}
+
+.card {
+    width: 1000px;
+}
