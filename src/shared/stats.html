@@ -16,6 +16,9 @@
 	<div class="d-flex justify-content-center">
 		<div class="card">
 			<div class="card-body">
+				<div class="d-flex justify-content-center">
+					<p id="errormsg"></p>
+				</div>
 				<canvas id="ctx"></canvas>
 				<hr />
 				<div class="container-fluid" id="chart-options-inner">
@@ -78,11 +81,6 @@
 						<div class="col d-flex justify-content-end chart-options-content">
 							<input class="per-hour" type="datetime-local" id="end-hour" step="3600" />
 							<input class="per-day" type="date" id="end-day" hidden />
-						</div>
-					</div>
-					<div class="row chart-options-row custom-options">
-						<div class="col chart-options-content">
-							<p>Filter:</p>
 						</div>
 					</div>
 				</div>

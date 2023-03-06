@@ -7,6 +7,7 @@ const ctx = <HTMLCanvasElement>document.getElementById("ctx");
 const view = <HTMLSelectElement>document.getElementById("view");
 const scale = <HTMLSelectElement>document.getElementById("scale");
 const mode = <HTMLSelectElement>document.getElementById("mode");
+const errormsg = <HTMLElement>document.getElementById("errormsg");
 
 const starthour = <HTMLInputElement>document.getElementById("start-hour");
 const endhour = <HTMLInputElement>document.getElementById("end-hour");
@@ -172,6 +173,18 @@ function requestData() {
     if (startval > endval) {
         return;
     }
+
+    if (
+        (scale.value === "per-hour"
+        && dfns.differenceInHours(input.end, input.start) >= 50)
+        || (scale.value === "per-day"
+        && dfns.differenceInCalendarDays(input.end, input.start) >= 50)
+    ) {
+        errormsg.innerHTML = "The dataset requested was too large.";
+        return;
+    }
+
+    errormsg.innerHTML = "";
     
     port.postMessage({
         func: mode.value,
@@ -191,6 +204,7 @@ function updateChart(response: any) {
     (<any>chart.options.scales!.y!.ticks!).stepSize
         = calcStepSize(<chartData><unknown>chart.data);
     chart.update();
+    errormsg.innerHTML = "";
 }
 
 let port = env.runtime.connect();
