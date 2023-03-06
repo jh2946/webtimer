@@ -92,13 +92,15 @@ export class Sitelogger {
         for (const url of urls) {
             totals[url] = Array(queries.length).fill(0);
         }
-        for (const idx in queries)
-        for (const url of urls)
-        if (await this.comp_cache.exists(url)) {
+        for (const url of urls) {
             let urlsitelog = await this.comp_cache.valueOf(url);
-            const query = queries[idx];
-            for (const interval of urlsitelog) {
-                totals[url][idx] += overlap(interval, query);
+            for (const idx in queries)
+            if (await this.comp_cache.exists(url)) {
+                const query = queries[idx];
+                for (const interval of urlsitelog) {
+                    totals[url][idx] += overlap(interval, query);
+                }
+
             }
         }
         for (const url of urls)
