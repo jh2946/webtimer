@@ -112,8 +112,8 @@ export class Sitelogger {
         queries: [number, number][]
     ) {
         let total = Array(queries.length).fill(0);
+        let nettlog = await this.nett_cache.valueOf("nett-log");
         for (const idx in queries) {
-            let nettlog = await this.nett_cache.valueOf("nett-log");
             const query = queries[idx];
             for (const interval of nettlog) {
                 total[idx] += overlap(interval, query);
