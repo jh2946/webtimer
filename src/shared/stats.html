@@ -26,31 +26,63 @@
 					</div>
 					<div class="row chart-options-row">
 						<div class="col chart-options-content">
+							<p>View:</p>
+						</div>
+						<div class="col d-flex justify-content-end chart-options-content">
+							<select name="view" id="view">
+								<option>Today</option>
+								<option>Yesterday</option>
+								<option>Last 24 hours</option>
+								<option>This week</option>
+								<option>Last week</option>
+								<option>Last 7 days</option>
+								<option>Custom</option>
+							</select>
+						</div>
+					</div>
+					<div class="row chart-options-row custom-options">
+						<div class="col chart-options-content">
 							<p>Scale:</p>
 						</div>
 						<div class="col d-flex justify-content-end chart-options-content">
 							<select name="scale" id="scale">
-								<option>per hour</option>
-								<option>per day</option>
+								<option>per-hour</option>
+								<option>per-day</option>
 							</select>
 						</div>
 					</div>
 					<div class="row chart-options-row">
 						<div class="col chart-options-content">
+							<p>Mode:</p>
+						</div>
+						<div class="col d-flex justify-content-end chart-options-content">
+							<select name="mode" id="mode">
+								<option>composition</option>
+								<option>nett</option>
+							</select>
+						</div>
+					</div>
+					<div class="row chart-options-row custom-options">
+						<div class="col chart-options-content">
 							<p>Start:</p>
 						</div>
 						<div class="col d-flex justify-content-end chart-options-content">
-							<input type="datetime-local" id="start-hour" step="3600" />
-							<input type="date" id="start-day" hidden />
+							<input class="per-hour" type="datetime-local" id="start-hour" step="3600" />
+							<input class="per-day" type="date" id="start-day" hidden />
 						</div>
 					</div>
-					<div class="row chart-options-row">
+					<div class="row chart-options-row custom-options">
 						<div class="col chart-options-content">
 							<p>End:</p>
 						</div>
 						<div class="col d-flex justify-content-end chart-options-content">
-							<input type="datetime-local" id="end-hour" step="3600" />
-							<input type="date" id="end-day" hidden />
+							<input class="per-hour" type="datetime-local" id="end-hour" step="3600" />
+							<input class="per-day" type="date" id="end-day" hidden />
+						</div>
+					</div>
+					<div class="row chart-options-row custom-options">
+						<div class="col chart-options-content">
+							<p>Filter:</p>
 						</div>
 					</div>
 				</div>

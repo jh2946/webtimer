@@ -1,11 +1,5 @@
-@font-face {
-    font-family: Futura-Light;
-    src: url(./fonts/futura\ light\ bt.ttf)
-}
-
-@font-face {
-    font-family: Futura;
-    src: url(./fonts/futura\ medium\ bt.ttf)
+h1 {
+    margin: 10px;
 }
 
 #chart-options {
@@ -30,6 +24,7 @@ select, input {
     border-radius: 5px;
     border-width: 0px;
     width: 215px;
+    background-color: #fff;
 }
 
 select:focus, input:focus {
@@ -42,4 +37,5 @@ select:focus, input:focus {
 
 .card {
     width: 1000px;
+    margin-bottom: 200px;
 }

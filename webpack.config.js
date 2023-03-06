@@ -1,11 +1,31 @@
 const path = require("path");
+const fs = require("fs");
+const CopyPlugin = require("copy-webpack-plugin")
+
+const map = {
+    chrome: "chrome",
+    firefox: "browser"
+};
+
+const settings = JSON.parse(fs.readFileSync("./src/settings.json"));
+
+fs.writeFileSync(
+    "./compile-args.ts",
+    `export const env = ${map[settings.browser]};\n`
+);
+
+function test(name) {
+    return name.match(/\.(html|css|json|png)$/)
+    || name.match(/import\//);
+}
+
 module.exports = {
-    mode: "production",
+    mode: settings.mode,
     devtool: "cheap-module-source-map",
     entry: {
-        "background": "./src/request-handler.ts",
-        "stats": "./src/stats.ts",
-        "popup": "./src/popup.ts"
+        "background": `./src/${settings.browser}/background.ts`,
+        "stats": "./src/shared/stats.ts",
+        "popup": "./src/shared/popup.ts"
     },
     module: {
         rules: [
@@ -21,6 +41,22 @@ module.exports = {
     },
     output: {
         filename: "[name].js",
-        path: path.resolve(__dirname, "public")
-    }
-}
+        path: path.resolve(__dirname, settings.browser)
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: "./src/shared/",
+                    to: "./",
+                    filter: test
+                },
+                {
+                    from: `./src/${settings.browser}`,
+                    to: "./",
+                    filter: test
+                }
+            ]
+        })
+    ]
+};
