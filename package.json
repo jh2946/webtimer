@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "build": "webpack --env=chrome-production && npm run zip",
-    "zip": "cd chrome && zip -r ../chrome.zip . && cd ../firefox && zip -r ../firefox.zip ."
+    "build": "webpack",
+    "chrome": "cd chrome && zip -r ../chrome.zip .",
+    "firefox": "cd firefox && zip -r ../firefox.zip ."
   },
   "devDependencies": {
     "@types/chrome": "^0.0.219",

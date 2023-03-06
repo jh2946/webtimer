@@ -27,6 +27,10 @@ npm run build
 
 ### For Firefox
 
+* Run in the webtimer directory:
+```
+npm run firefox
+```
 * Install [Firefox Browser Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) and open
 * Go to address "about:config"
 * Search preference name "xpinstall.signatures.required" and toggle to false
