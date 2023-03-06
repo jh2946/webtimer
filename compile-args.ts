@@ -1,1 +1,1 @@
-export const env = chrome;
+export const env = browser;

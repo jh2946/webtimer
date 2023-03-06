@@ -19,9 +19,7 @@ export class ObjectCache<T> {
 
     private async _init() {
         const data = (await env.storage.local.get(this.id))[this.id] || "{}";
-        console.log(data);
         this.obj = JSON.parse(data);
-        console.log(this.obj);
         setInterval(() => {
             let kv: { [key: string]: string } = {};
             kv[this.id] = JSON.stringify(this.obj);
@@ -31,7 +29,6 @@ export class ObjectCache<T> {
 
     async printrepr() {
         await this.loaded;
-        console.log(this.obj);
     }
 
     async exists(key: string) {

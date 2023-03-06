@@ -15,8 +15,7 @@ fs.writeFileSync(
 );
 
 function test(name) {
-    return name.match(/\.(html|css|json|png)$/)
-    || name.match(/import\//);
+    return !name.match(/\.ts$/);
 }
 
 module.exports = {

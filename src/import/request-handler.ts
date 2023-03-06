@@ -20,14 +20,12 @@ export function functionToConnect(sitelogger: Sitelogger) {
             const queries = buildQuery(req.start, req.end, req.scale);
             let response: object;
             let rawdata: { [key: string]: number[] };
-            console.log(req);
             switch(req.func) {
                 case "composition":
                     rawdata = await sitelogger.queryComp(queries);
                     response = chartReadable(
                         rawdata, queries, req.scale
                     );
-                    console.log(rawdata, response);
                     break;
                 case "nett":
                     rawdata = await sitelogger.queryNett(queries);
@@ -50,7 +48,6 @@ export function functionToConnect(sitelogger: Sitelogger) {
                         sitetime: sitetime,
                         netttime: netttime
                     };
-                    console.log(response);
                     break;
                 default:
                     throw new Error(`Invalid req.func: ${req.func}`);
