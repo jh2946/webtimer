@@ -1,5 +1,6 @@
 const psl = require("psl");
 
+// extracts domain name from input url
 export function getDomain(url: string) {
 	try {
 		const domain = new URL(url).hostname;
@@ -27,6 +28,8 @@ function zp(n: number) {
     return `${n}`;
 }
 
+// transform duration, from milliseconds into
+// human readable form
 export function duration(ms: number) {
     let sec = Math.floor(ms / 1000);
     let min = Math.floor(sec / 60);
@@ -34,18 +37,9 @@ export function duration(ms: number) {
     let h = Math.floor(min / 60);
     min -= h * 60;
     if (!h) {
-        return `${zp(min)}:${zp(sec)}`;
+        return `${zp(min)}:${zp(sec)}`; // mm:ss
     }
-    return `${zp(h)}:${zp(min)}:${zp(sec)}`;
-}
-
-export interface datapoint {
-    label: string,
-    data: number[]
-}
-export interface chartData {
-    labels: string[],
-    datasets: datapoint[];
+    return `${zp(h)}:${zp(min)}:${zp(sec)}`; // hh:mm:ss
 }
 
 const stepSizes = [
@@ -59,7 +53,12 @@ const stepSizes = [
     1000*60*60*6
 ];
 
-export function calcStepSize(data: chartData) {
+/*
+an appropriate interval size for the y-axis of the chart
+given some chart data, using the calculation of its
+maximum bar height
+*/
+export function calcStepSize(data: any) {
     let maxBarHeight = 0;
     for (const idx in data.labels) {
         let barHeight = 0;

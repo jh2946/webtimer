@@ -2,6 +2,11 @@ import { ObjectCache } from "./cache";
 import { env } from "../../compile-args";
 import { getDomain, last } from "./utils";
 
+/*
+returns the size the area of overlap
+in the intersection of two time intervals,
+in milliseconds
+*/
 function overlap(
     interval1: [number, number],
     interval2: [number, number]
@@ -18,7 +23,11 @@ function overlap(
 export class Sitelogger {
 
     private comp_cache: ObjectCache<[number, number][]>;
+    // stores when the user visited specific sites
+
     private nett_cache: ObjectCache<[number, number][]>;
+    // stores when the user used a browser at all
+
     private leniency = 100;
     private resolution = 20;
 
@@ -35,6 +44,7 @@ export class Sitelogger {
         }, this.resolution);
     }
 
+    // tab info is passed in, updates usage time accordingly
     private async _updateActivity(
         urls: string[],
         time: number = Date.now()
@@ -81,6 +91,26 @@ export class Sitelogger {
 
     }
 
+    /*
+    queries: an array of intervals, each interval being
+    in the form of [start, end], where start, end are
+    in millisecond timestamp format
+
+    given an array of query intervals q
+    and an array of urls [
+        "sitename1.com",
+        "sitename2.com",
+        ...
+    ]
+    returns data in the form:
+    {
+        "sitename1.com": a1,
+        "sitename2.com": a2,
+        ...
+    }
+    where a1[i] represents the amount of time spent
+    using "sitename1.com" in the interval q[i]
+    */
     async queryComp(
         queries: [number, number][],
         urls: string[] = []
@@ -110,6 +140,11 @@ export class Sitelogger {
         return totals;
     }
 
+    /*
+    same as queryComp, but member "Total" of the returned
+    object is an array where total[i] represents the amount
+    of time spent using the browser in the interval q[i]
+    */
     async queryNett(
         queries: [number, number][]
     ) {

@@ -18,9 +18,9 @@ port.onMessage.addListener((response: any) => {
     }, 20);
 });
 
-const now = Date.now();
 
 (async () => {
+    const now = Date.now();
     const tabs = await env.tabs.query({active: true, lastFocusedWindow: true});
     const current = getDomain(tabs[0].url!);
     let msg = current.slice(0, 20);

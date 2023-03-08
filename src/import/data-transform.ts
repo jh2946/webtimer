@@ -1,6 +1,6 @@
 const dfns = require("date-fns");
-import { datapoint } from "./utils";
 
+// returns x-axis labels (for per-hour queries)
 function labelHours(intervals: [number, number][]) {
     let labels: string[] = [];
     let step = 1;
@@ -78,12 +78,16 @@ const startmap: { [key: string]: Function } = {
     "per-day": dfns.startOfDay
 }
 
+/*
+turns output from sitelogger into data
+readable by the chart in stats.js
+*/
 export function chartReadable(
     rawdata: { [key: string]: number[] },
     intervals: [number, number][],
     scale: string
 ) {
-    let datasets: datapoint[] = [];
+    let datasets: any[] = [];
     for (const key in rawdata) {
         datasets.push({
             label: key,
@@ -96,6 +100,9 @@ export function chartReadable(
     };
 }
 
+/*
+turns request into input acceptable by sitelogger
+*/
 export function buildQuery(
     start: number,
     end: number,

@@ -1,5 +1,10 @@
 import { env } from "../../compile-args";
-
+/*
+manages data stored in location id within local storage
+as an intermediary, updating local storage to match
+its internal data while also allowing other stuff to
+access its internal data
+*/
 export class ObjectCache<T> {
 
     private id: string;
@@ -8,7 +13,7 @@ export class ObjectCache<T> {
     private loaded = this._init();
     private interval: number;
 
-    constructor(id: string, interval: number = 200) {
+    constructor(id: string, interval: number = 20000) {
         if (ObjectCache.idset.has(id)) {
             throw new Error(`ObjectCache with id ${id} already exists`);
         }

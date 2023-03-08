@@ -11,7 +11,7 @@ const settings = JSON.parse(fs.readFileSync("./src/settings.json"));
 
 fs.writeFileSync(
     "./compile-args.ts",
-    `export const env = ${map[settings.browser]};\n`
+    `export const env = ${map[settings.browser]};\n// set by settings.json upon npm run build\n`
 );
 
 function test(name) {
@@ -59,3 +59,17 @@ module.exports = {
         })
     ]
 };
+
+/*
+The ./firefox and ./chrome folders will be zipped into
+firefox.zip and chrome.zip, the extensions as a final
+product.
+
+All files in ./src/firefox or ./src/chrome will be copied
+into ./firefox or ./chrome respectively, except for .ts
+which will be compiled into .js. Files in ./src/shared will
+be copied into both ./firefox and ./chrome. The value of
+"browser" in ./src/settings.json is set to either "firefox"
+or "chrome" to control which folder (./firefox or ./chrome)
+is built.
+*/

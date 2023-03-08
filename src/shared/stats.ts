@@ -1,7 +1,7 @@
 import Chart from "chart.js/auto";
 import { env } from "../../compile-args";
 const dfns = require("date-fns");
-import { duration, calcStepSize, chartData } from "../import/utils"
+import { duration, calcStepSize } from "../import/utils"
 
 const ctx = <HTMLCanvasElement>document.getElementById("ctx");
 const view = <HTMLSelectElement>document.getElementById("view");
@@ -22,6 +22,10 @@ const scales: { [key: string]: [HTMLInputElement, HTMLInputElement] } = {
     "per-day": day
 }
 
+/*
+prepares the correct input date values when
+<select id="view"> is changed, for later logic to read
+*/
 function adjustView() {
 
     for (const row of document.getElementsByClassName("custom-options")) {
@@ -89,16 +93,8 @@ function adjustView() {
 
 }
 
-function defaultInput() {
-    const now = new Date();
-    const todaystart = dfns.startOfDay(now);
-    const sevenDaysAgo = dfns.addDays(todaystart, -7);
-    startday.value = dfns.format(sevenDaysAgo, "yyyy-MM-dd");
-    endday.value = dfns.format(todaystart, "yyyy-MM-dd");
-
-    adjustView();
-}
-
+// forces input values to take on a form that can be
+// accepted by later logic
 function validInput() {
 
     adjustView();
@@ -164,6 +160,7 @@ const chart = new Chart(ctx, {
     }
 });
 
+// sends query request to background.js
 function requestData() {
 
     const input = validInput();
@@ -174,11 +171,11 @@ function requestData() {
         return;
     }
 
+    // if the number of bars would exceed 50, stop the request,
+    // warn the user, and don't update the chart
     if (
-        (scale.value === "per-hour"
-        && dfns.differenceInHours(input.end, input.start) >= 50)
-        || (scale.value === "per-day"
-        && dfns.differenceInCalendarDays(input.end, input.start) >= 50)
+        !(scale.value === "per-hour" && dfns.differenceInHours(input.end, input.start) < 50)
+        && !(scale.value === "per-day" && dfns.differenceInCalendarDays(input.end, input.start) < 50)
     ) {
         errormsg.innerHTML = "The dataset requested was too large.";
         return;
@@ -186,30 +183,32 @@ function requestData() {
 
     errormsg.innerHTML = "";
     
+    // see request-handler.ts
     port.postMessage({
-        func: mode.value,
-        scale: scale.value,
-        start: startval,
-        end: endval,
+        func: mode.value, // "composition" | "nett"
+        scale: scale.value, // "per-hour" | "per-day"
+        start: startval, // timestamp (ms)
+        end: endval, // timestamp (ms)
         urls: []
     });
 
 }
 
+// receives query response and shows on chart
 function updateChart(response: any) {
     if (!response.labels) {
         return;
     }
     chart.data = response;
     (<any>chart.options.scales!.y!.ticks!).stepSize
-        = calcStepSize(<chartData><unknown>chart.data);
+        = calcStepSize(<any>chart.data);
     chart.update();
     errormsg.innerHTML = "";
 }
 
 let port = env.runtime.connect();
 
-defaultInput();
+adjustView();
 port.onMessage.addListener(updateChart);
 for (const p_scale in scales) for (const element of scales[p_scale]) {
     element.addEventListener("change", requestData);
@@ -218,3 +217,8 @@ view.addEventListener("change", requestData);
 scale.addEventListener("change", requestData);
 mode.addEventListener("change", requestData);
 requestData();
+/*
+Every time the input is updated, stats.js sends a query request
+to background.js via requestData. When a response comes back,
+updateChart is run.
+*/

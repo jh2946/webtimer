@@ -6,14 +6,45 @@ import { chartReadable, buildQuery } from "./data-transform";
 interface request {
 
     func: string,
+    /*
+    dictates the type of query to be made:
+
+        "composition" from stats.js - queried data will be
+        used to show how much time user spends on each
+        individual site (chart format)
+
+        "nett" from stats.js - to show how much time user
+        spends on the entire browser (chart format)
+
+        "simple" from popup.js - to show how much time user
+        has spent, both on a single website and on the entire browser
+        (text format)
+
+    */
 
     scale: string,
+    /*
+    dictates how wide the query intervals should be:
+        "per-hour"
+        "per-day"
+    */
+
     urls: string[],
+    /*
+    specifies for which urls sitelogger has to query time
+
+    if empty, sitelogger queries all data
+    */
+
     start: number,
+    // timestamp, in milliseconds, of the first hour/day to query
+
     end: number
+    // last hour/day
 
 }
 
+// returns callback
 export function functionToConnect(sitelogger: Sitelogger) {
     return (port: any) => {
         port.onMessage.addListener(async (req: request) => {
