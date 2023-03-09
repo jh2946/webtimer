@@ -14,7 +14,7 @@
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "webtimer@jh2946.github.com"
+            "id": "webtimer@jh2946"
         }
     },
     "browser_action": {

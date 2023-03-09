@@ -30,6 +30,7 @@ export class Sitelogger {
 
     private leniency = 100;
     private resolution = 20;
+    private prunelimit = 100000;
 
     constructor(
         comp_cache: ObjectCache<[number, number][]>,
@@ -37,11 +38,14 @@ export class Sitelogger {
     ) {
         this.comp_cache = comp_cache;
         this.nett_cache = nett_cache;
-        setInterval(async () => {
-            const tabs = await env.tabs.query({ active: true });
-            const urls = tabs.map(tab => getDomain(tab.url!));
-            this._updateActivity(urls);
-        }, this.resolution);
+        (async () => {
+            await this._prune();
+            setInterval(async () => {
+                const tabs = await env.tabs.query({ active: true });
+                const urls = tabs.map(tab => getDomain(tab.url!));
+                this._updateActivity(urls);
+            }, this.resolution);
+        })();
     }
 
     // tab info is passed in, updates usage time accordingly
@@ -88,6 +92,40 @@ export class Sitelogger {
                 );
             }
         }
+
+    }
+
+    // autodeletes the earliest (hence most irrelevant) records
+    // to keep the total number of records under this.prunelimit
+    private async _prune() {
+        // [end of interval, url, index]
+        let ordertable: [number, string, number][] = [];
+        for (const url of await this.comp_cache.getKeys()) {
+            const intervals = await this.comp_cache.valueOf(url);
+            if (!intervals.length) {
+                this.comp_cache.deleteValue(url);
+                continue;
+            }
+            for (const idx in intervals) {
+                ordertable.push([intervals[idx][1], url, Number(idx)]);
+            }
+        }
+        ordertable = ordertable.sort((a, b) => a[0]-b[0]).reverse();
+        let seen: Set<string> = new Set();
+        for (const row of ordertable.slice(this.prunelimit)) {
+            if (seen.has(row[1])) {
+                continue;
+            }
+            seen.add(row[1]);
+            const intervals = await this.comp_cache.valueOf(row[1]);
+            this.comp_cache.assignValue(row[1], intervals.slice(row[2]+1));
+        }
+
+        if (await this.nett_cache.exists("nett-log")) {
+            const intervals = await this.nett_cache.valueOf("nett-log");
+            this.nett_cache.assignValue("nett-log", intervals.slice(-this.prunelimit));
+        }
+
 
     }
 

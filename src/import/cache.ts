@@ -25,7 +25,7 @@ export class ObjectCache<T> {
     private async _init() {
         const data = (await env.storage.local.get(this.id))[this.id] || "{}";
         this.obj = JSON.parse(data);
-        setInterval(() => {
+        setInterval(async () => {
             let kv: { [key: string]: string } = {};
             kv[this.id] = JSON.stringify(this.obj);
             env.storage.local.set(kv);
@@ -33,6 +33,7 @@ export class ObjectCache<T> {
     }
 
     async printrepr() {
+        console.log(this.obj);
         await this.loaded;
     }
 
@@ -53,6 +54,11 @@ export class ObjectCache<T> {
     async assignValue(key: string, value: T) {
         await this.loaded;
         this.obj[key] = value;
+    }
+
+    async deleteValue(key: string) {
+        await this.loaded;
+        return delete this.obj[key];
     }
 
     async getKeys() {
