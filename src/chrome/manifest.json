@@ -1,6 +1,6 @@
 {
     "name": "webtimer",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "author": "jh2946",
     "manifest_version": 3,
     "description": "track how much time you spend on websites",

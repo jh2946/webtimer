@@ -14,3 +14,5 @@ chrome.offscreen.createDocument({
     justification: ""
 });
 env.runtime.onMessage.addListener(() => {});
+
+chrome.windows.onCreated.addListener(() => {});

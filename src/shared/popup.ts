@@ -13,8 +13,8 @@ port.onMessage.addListener((response: any) => {
     const time_a = performance.now();
     setInterval(() => {
         let time_b = performance.now();
-        sitetime.innerHTML = duration(response.sitetime + time_b - time_a);
-        netttime.innerHTML = duration(response.netttime + time_b - time_a);
+        sitetime.innerText = duration(response.sitetime + time_b - time_a);
+        netttime.innerText = duration(response.netttime + time_b - time_a);
     }, 20);
 });
 
@@ -28,7 +28,7 @@ port.onMessage.addListener((response: any) => {
         msg += "...";
     }
     msg = `Time spent on site "${msg}" today: `;
-    message.innerHTML = msg;
+    message.innerText = msg;
     port.postMessage({
         func: "simple",
         scale: "per-day",

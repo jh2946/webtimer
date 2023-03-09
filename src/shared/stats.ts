@@ -177,11 +177,11 @@ function requestData() {
         !(scale.value === "per-hour" && dfns.differenceInHours(input.end, input.start) < 50)
         && !(scale.value === "per-day" && dfns.differenceInCalendarDays(input.end, input.start) < 50)
     ) {
-        errormsg.innerHTML = "The dataset requested was too large.";
+        errormsg.innerText = "The dataset requested was too large.";
         return;
     }
 
-    errormsg.innerHTML = "";
+    errormsg.innerText = "";
     
     // see request-handler.ts
     port.postMessage({
@@ -203,7 +203,7 @@ function updateChart(response: any) {
     (<any>chart.options.scales!.y!.ticks!).stepSize
         = calcStepSize(<any>chart.data);
     chart.update();
-    errormsg.innerHTML = "";
+    errormsg.innerText = "";
 }
 
 let port = env.runtime.connect();
