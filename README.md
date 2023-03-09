@@ -43,6 +43,8 @@ npm run firefox
 
 ### Additional information for code review
 
+`./src/shared/import` contains pre-compiled code downloaded from the internet. These files will be copied wholesale into the extension. Below are all the links to the compiled code:
+
 Bootstrap was obtained in compiled form from https://getbootstrap.com/docs/4.0/getting-started/download/
 
 Bootstrap direct download link: https://github.com/twbs/bootstrap/releases/download/v4.0.0/bootstrap-4.0.0-dist.zip
